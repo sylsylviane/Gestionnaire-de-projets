@@ -1,6 +1,7 @@
 import { Form, Head } from '@inertiajs/react';
 import { ShieldBan, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Heading from '@/components/heading';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
@@ -11,7 +12,6 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { disable, enable, show } from '@/routes/two-factor';
 import type { BreadcrumbItem } from '@/types';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
     requiresConfirmation?: boolean;
@@ -44,14 +44,18 @@ export default function TwoFactor({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('Two Factor Authentication')} />
 
-            <h1 className="sr-only">{t('Two Factor Authentication Settings')}</h1>
+            <h1 className="sr-only">
+                {t('Two Factor Authentication Settings')}
+            </h1>
 
             <SettingsLayout>
                 <div className="space-y-6">
                     <Heading
                         variant="small"
                         title={t('Two Factor Authentication')}
-                        description={t('Manage your two factor authentication settings')}
+                        description={t(
+                            'Manage your two factor authentication settings',
+                        )}
                     />
                     {twoFactorEnabled ? (
                         <div className="flex flex-col items-start justify-start space-y-4">
@@ -87,7 +91,9 @@ export default function TwoFactor({
                         <div className="flex flex-col items-start justify-start space-y-4">
                             <Badge variant="destructive">{t('Disabled')}</Badge>
                             <p className="text-muted-foreground">
-                                {t('When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from the TOTP-supported application on your phone.')}
+                                {t(
+                                    'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from the TOTP-supported application on your phone.',
+                                )}
                             </p>
 
                             <div>

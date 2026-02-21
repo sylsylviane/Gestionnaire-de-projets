@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
@@ -11,9 +12,6 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/user-password';
 import type { BreadcrumbItem } from '@/types';
-import { useTranslation } from 'react-i18next';
-
-
 
 export default function Password() {
     const { t } = useTranslation();
@@ -37,7 +35,9 @@ export default function Password() {
                     <Heading
                         variant="small"
                         title={t('Update Password')}
-                        description={t('Ensure your account is using a long, random password to stay secure.')}
+                        description={t(
+                            'Ensure your account is using a long, random password to stay secure.',
+                        )}
                     />
 
                     <Form
