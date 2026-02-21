@@ -6,19 +6,24 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';
+import { useTranslation } from 'react-i18next';
 
 export default function VerifyEmail({ status }: { status?: string }) {
+    const { t } = useTranslation();
     return (
         <AuthLayout
-            title="Verify email"
-            description="Please verify your email address by clicking on the link we just emailed to you."
+            title={t('Verify Email Address')}
+            description={t(
+                'Please verify your email address by clicking on the link we just emailed to you.',
+            )}
         >
             <Head title="Email verification" />
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                    {t(
+                        'A new verification link has been sent to the email address you provided during registration.',
+                    )}
                 </div>
             )}
 
@@ -27,14 +32,14 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     <>
                         <Button disabled={processing} variant="secondary">
                             {processing && <Spinner />}
-                            Resend verification email
+                            {t('Resend Verification Email')}
                         </Button>
 
                         <TextLink
                             href={logout()}
                             className="mx-auto block text-sm"
                         >
-                            Log out
+                            {t('Log out')}
                         </TextLink>
                     </>
                 )}
