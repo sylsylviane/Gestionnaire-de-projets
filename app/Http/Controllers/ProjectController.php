@@ -22,7 +22,7 @@ class ProjectController extends Controller
         }
 
         return inertia('projects/index', [
-            'projects' => $projects
+            'projects' => $projects,
         ]);
     }
 

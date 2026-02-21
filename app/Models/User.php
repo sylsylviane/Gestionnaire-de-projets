@@ -4,11 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -52,12 +52,11 @@ class User extends Authenticatable
         ];
     }
 
-    /** 
+    /**
      * Retourne les projets associés à ce dessinateur.
      * Relation : un utilisateur peut avoir plusieurs projets.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function projects() : BelongsToMany
+    public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class)
             ->withPivot('role')

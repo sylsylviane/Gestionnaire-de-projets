@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ProjectPolicy
 {
@@ -24,6 +23,7 @@ class ProjectPolicy
         if ($user->hasRole('admin')) {
             return true;
         }
+
         return $project->users()->where('user_id', $user->id)->exists();
     }
 
@@ -36,7 +36,7 @@ class ProjectPolicy
     }
 
     /**
-    * Détermine si l'utilisateur peut mettre à jour le modèle projet.
+     * Détermine si l'utilisateur peut mettre à jour le modèle projet.
      */
     public function update(User $user, Project $project): bool
     {
@@ -48,7 +48,7 @@ class ProjectPolicy
     }
 
     /**
-    * Détermine si l'utilisateur peut supprimer le modèle projet.
+     * Détermine si l'utilisateur peut supprimer le modèle projet.
      */
     public function delete(User $user, Project $project): bool
     {
@@ -64,7 +64,7 @@ class ProjectPolicy
     }
 
     /**
-    * Détermine si l'utilisateur peut supprimer définitivement le modèle projet.
+     * Détermine si l'utilisateur peut supprimer définitivement le modèle projet.
      */
     public function forceDelete(User $user, Project $project): bool
     {

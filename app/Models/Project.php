@@ -19,15 +19,14 @@ class Project extends Model
         'status',
         'created_at',
         'updated_at',
-        'user_id'
+        'user_id',
     ];
 
-    /** 
+    /**
      * Retourne les utilisateurs (dessinateurs) associés à ce projet.
      * Relation : un projet peut être assigné à plusieurs utilisateurs.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users() : BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
             ->withPivot('role')
