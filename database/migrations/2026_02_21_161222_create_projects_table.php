@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->enum('building_type', [
                 'combustible',
-                'incombustible_steel',
-                'incombustible_concrete'
+                'incombustible_acier',
+                'incombustible_beton',
             ]);
 
             $table->integer('floors');
@@ -38,7 +38,6 @@ return new class extends Migration
             ])->default('en_cours');
 
             $table->timestamps();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 
