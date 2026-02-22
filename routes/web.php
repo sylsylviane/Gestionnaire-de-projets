@@ -19,4 +19,8 @@ Route::get('/projects', [ProjectController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('projects.index');
 
+Route::get('/projects/create', [ProjectController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('projects.create');
+
 require __DIR__.'/settings.php';
