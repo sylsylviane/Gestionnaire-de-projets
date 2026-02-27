@@ -22,6 +22,16 @@ class Project extends Model
         'user_id',
     ];
 
+    // Cast les champs booléens pour qu'ils soient traités comme des booléens en PHP
+    protected function casts(): array
+    {
+        return [
+            'electrical_done' => 'boolean',
+            'sleeves_done' => 'boolean',
+            'drainage_done' => 'boolean',
+        ];
+    }
+
     /**
      * Retourne les utilisateurs (dessinateurs) associés à ce projet.
      * Relation : un projet peut être assigné à plusieurs utilisateurs.
