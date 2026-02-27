@@ -39,7 +39,29 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'project_number' => 'required|string|unique:projects,project_number',
+            'project_name' => 'required|string',
+            'building_type' => 'required|in:combustible,incombustible_acier,incombustible_beton',
+            'floors' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'electrical_done' => 'boolean',
+            'sleeves_done' => 'boolean',
+            'drainage_done' => 'boolean',
+        ]);
+
+        $validated['electrical_done'] = $request->boolean('electrical_done');
+        $validated['sleeves_done'] = $request->boolean('sleeves_done');
+        $validated['drainage_done'] = $request->boolean('drainage_done');
+
+        $project = Project::create($validated);
+
+        $project->users()->attach($request->user()->id, [
+            'role' => 'employee',
+        ]);
+
+        return redirect()->route('projects.index')
+            ->with('success', 'Projet créé avec succès.');
     }
 
     /**
