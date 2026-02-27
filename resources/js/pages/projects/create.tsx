@@ -1,7 +1,9 @@
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { Form, Head } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -11,95 +13,183 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import { store } from '@/routes/projects';
 
 export default function ProjectsCreate() {
     const { t } = useTranslation();
-    const [buildingType, setBuildingType] = useState('');
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('Create a new project'),
-            href: '',
-        },
-    ];
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout>
             <Head title={t('Create a new project')} />
-            <div className="space-y-6 p-4">
-                <div>
-                    <h3 className="text-lg font-semibold">
-                        {t('Create a new project')}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                        {t('Fill in the details to create a new project')}
-                    </p>
-                </div>
-                <div className="space-y-4">
-                    <div>
-                        <Label htmlFor="project_name">
-                            {t('Project Name')}
-                        </Label>
-                        <Input
-                            id="project_name"
-                            name="project_name"
-                            placeholder={t('Enter project name')}
-                            className="mt-1"
-                        />
-                    </div>
-                    <div>
-                        <Label htmlFor="project_number">
-                            {t('Project Number')}
-                        </Label>
-                        <Input
-                            id="project_number"
-                            name="project_number"
-                            placeholder={t('Enter project number')}
-                            className="mt-1"
-                        />
-                    </div>
-                    <div>
-                        <Label htmlFor="building_type">
-                            {t('Building Type')}
-                        </Label>
-                        <Select
-                            value={buildingType}
-                            onValueChange={setBuildingType}
-                        >
-                            <SelectTrigger id="building_type" className="mt-1">
-                                <SelectValue
-                                    placeholder={t('Select a building type')}
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="combustible">
-                                    {t('Combustible')}
-                                </SelectItem>
-                                <SelectItem value="incombustible_acier">
-                                    {t('Acier')}
-                                </SelectItem>
-                                <SelectItem value="incombustible_beton">
-                                    {t('Béton')}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
 
-                    <div>
-                        <Label htmlFor="floors">{t('Number of Floors')}</Label>
-                        <Input
-                            id="floors"
-                            name="floors"
-                            type="number"
-                            placeholder={t('Enter number of floors')}
-                            className="mt-1"
-                        />
-                    </div>
-                    <Button type="submit">{t('Create Project')}</Button>
-                </div>
-            </div>
+            <Form {...store.form()} className="space-y-6 p-4">
+                {({ processing, errors }) => (
+                    <>
+                        <div>
+                            <h3 className="text-lg font-semibold">
+                                {t('Create a new project')}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                                {t(
+                                    'Fill in the details to create a new project',
+                                )}
+                            </p>
+                        </div>
+
+                        {/* Project Number */}
+                        <div>
+                            <Label htmlFor="project_number">
+                                {t('Project Number')}
+                            </Label>
+                            <Input
+                                id="project_number"
+                                name="project_number"
+                                required
+                            />
+                            <InputError message={errors.project_number} />
+                        </div>
+
+                        {/* Project Name */}
+                        <div>
+                            <Label htmlFor="project_name">
+                                {t('Project Name')}
+                            </Label>
+                            <Input
+                                id="project_name"
+                                name="project_name"
+                                required
+                            />
+                            <InputError message={errors.project_name} />
+                        </div>
+
+                        {/* Building Type */}
+                        <div>
+                            <Label htmlFor="building_type">
+                                {t('Building Type')}
+                            </Label>
+
+                            <Select name="building_type" required>
+                                <SelectTrigger className="mt-1">
+                                    <SelectValue
+                                        placeholder={t(
+                                            'Select a building type',
+                                        )}
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="combustible">
+                                        {t('Combustible')}
+                                    </SelectItem>
+                                    <SelectItem value="incombustible_acier">
+                                        {t('Acier')}
+                                    </SelectItem>
+                                    <SelectItem value="incombustible_beton">
+                                        {t('Béton')}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <InputError message={errors.building_type} />
+                        </div>
+
+                        {/* Floors */}
+                        <div>
+                            <Label htmlFor="floors">
+                                {t('Number of Floors')}
+                            </Label>
+                            <Input
+                                id="floors"
+                                type="number"
+                                name="floors"
+                                min={0}
+                                required
+                            />
+                            <InputError message={errors.floors} />
+                        </div>
+
+                        {/* Description */}
+                        <div>
+                            <Label htmlFor="description">
+                                {t('Description')}
+                            </Label>
+                            <Input id="description" name="description" />
+                            <InputError message={errors.description} />
+                        </div>
+
+                        {/* Status */}
+                        <div>
+                            <Label htmlFor="status">{t('Status')}</Label>
+
+                            <Select name="status" defaultValue="en_cours">
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="en_cours">
+                                        {t('En cours')}
+                                    </SelectItem>
+                                    <SelectItem value="termine">
+                                        {t('Terminé')}
+                                    </SelectItem>
+                                    <SelectItem value="suspendu">
+                                        {t('Suspendu')}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Coordination technique */}
+                        <div className="space-y-3 border-t pt-4">
+                            <h4 className="text-sm font-medium">
+                                {t('Task Status')}
+                            </h4>
+
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="electrical_done"
+                                    name="electrical_done"
+                                    value="1"
+                                />
+                                <Label htmlFor="electrical_done">
+                                    {t('Electrical Done')}
+                                </Label>
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="sleeves_done"
+                                    name="sleeves_done"
+                                    value="1"
+                                />
+                                <Label htmlFor="sleeves_done">
+                                    {t('Sleeves Done')}
+                                </Label>
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="drainage_done"
+                                    name="drainage_done"
+                                    value="1"
+                                />
+                                <Label htmlFor="drainage_done">
+                                    {t('Drainage Done')}
+                                </Label>
+                            </div>
+                        </div>
+
+                        <Button
+                            type="submit"
+                            disabled={processing}
+                            className="w-full"
+                        >
+                            {t('Create Project')}
+                        </Button>
+                    </>
+                )}
+            </Form>
         </AppLayout>
     );
 }
