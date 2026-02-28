@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { create } from '@/routes/projects';
+import { create, edit, show } from '@/routes/projects';
 import type { BreadcrumbItem } from '@/types';
 
 interface Project {
@@ -113,6 +113,9 @@ export default function ProjectsIndex({ projects }: Props) {
                                     <th className="px-4 py-3 text-left font-medium">
                                         {t('Drawer')}
                                     </th>
+                                    <th className="px-4 py-3 text-center font-medium">
+                                        {t('Actions')}
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -152,6 +155,22 @@ export default function ProjectsIndex({ projects }: Props) {
                                                       .map((u) => u.name)
                                                       .join(', ')
                                                 : '—'}
+                                        </td>
+                                        <td className="px-4 py-3 text-center">
+                                            <Button asChild className="mr-2">
+                                                <Link
+                                                    href={edit.url(project.id)}
+                                                >
+                                                    {t('Edit')}
+                                                </Link>
+                                            </Button>
+                                            <Button asChild>
+                                                <Link
+                                                    href={show.url(project.id)}
+                                                >
+                                                    {t('Show')}
+                                                </Link>
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
