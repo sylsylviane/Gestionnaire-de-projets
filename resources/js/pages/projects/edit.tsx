@@ -1,7 +1,5 @@
-import { Head,} from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { edit, index } from '@/routes/projects';
 import type { BreadcrumbItem } from '@/types';
@@ -43,12 +41,13 @@ export default function ProjectsEdit({ project }: Props) {
             <Head title={t('Edit Project')} />
             <h1 className="sr-only">{t('Edit Project')}</h1>
             <div className="p-4">
-                <h2 className="text-lg font-semibold">{project.project_name}</h2>
+                <h2 className="text-lg font-semibold">
+                    {project.project_name}
+                </h2>
                 <p className="text-sm text-muted-foreground">
                     {t('Edit the details of your project')}
                 </p>
             </div>
-
         </AppLayout>
     );
 }
