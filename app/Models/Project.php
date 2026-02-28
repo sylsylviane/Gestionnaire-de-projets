@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
@@ -13,24 +14,10 @@ class Project extends Model
         'building_type',
         'floors',
         'description',
-        'electrical_done',
-        'sleeves_done',
-        'drainage_done',
         'status',
         'created_at',
         'updated_at',
-        'user_id',
     ];
-
-    // Cast les champs booléens pour qu'ils soient traités comme des booléens en PHP
-    protected function casts(): array
-    {
-        return [
-            'electrical_done' => 'boolean',
-            'sleeves_done' => 'boolean',
-            'drainage_done' => 'boolean',
-        ];
-    }
 
     /**
      * Retourne les utilisateurs (dessinateurs) associés à ce projet.
@@ -41,5 +28,14 @@ class Project extends Model
         return $this->belongsToMany(User::class)
             ->withPivot('project_role')
             ->withTimestamps();
+    }
+
+        /**
+        * Retourne les exigences associées à ce projet.
+        * Relation : un projet peut avoir plusieurs exigences (electrical, drainage, sleeves, elevator).
+        */
+    public function requirements() : HasMany
+    {
+        return $this->hasMany(ProjectRequirement::class);
     }
 }
