@@ -140,46 +140,6 @@ export default function ProjectsCreate() {
                             </Select>
                         </div>
 
-                        {/* Coordination technique */}
-                        <div className="space-y-3 border-t pt-4">
-                            <h4 className="text-sm font-medium">
-                                {t('Task Status')}
-                            </h4>
-
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    id="electrical_done"
-                                    name="electrical_done"
-                                    value="1"
-                                />
-                                <Label htmlFor="electrical_done">
-                                    {t('Electrical Done')}
-                                </Label>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    id="sleeves_done"
-                                    name="sleeves_done"
-                                    value="1"
-                                />
-                                <Label htmlFor="sleeves_done">
-                                    {t('Sleeves Done')}
-                                </Label>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    id="drainage_done"
-                                    name="drainage_done"
-                                    value="1"
-                                />
-                                <Label htmlFor="drainage_done">
-                                    {t('Drainage Done')}
-                                </Label>
-                            </div>
-                        </div>
-
                         <Button
                             type="submit"
                             disabled={processing}
