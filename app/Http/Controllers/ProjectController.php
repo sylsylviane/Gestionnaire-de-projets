@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -16,10 +16,10 @@ class ProjectController extends Controller
         $user = $request->user();
 
         if ($user->hasRole('admin')) {
-            $projects = Project::with('users')->get();
+            $projects = Project::with(['users', 'requirements'])->get();
         } else {
             $projects = $user->projects()
-                ->with('users')
+                ->with(['users', 'requirements'])
                 ->get();
         }
 
@@ -47,32 +47,34 @@ class ProjectController extends Controller
             'building_type' => 'required|in:combustible,incombustible_acier,incombustible_beton',
             'floors' => 'required|integer|min:0',
             'description' => 'nullable|string',
-            'electrical_done' => 'boolean',
-            'sleeves_done' => 'boolean',
-            'drainage_done' => 'boolean',
+            'status' => 'required|string',
         ]);
 
-        $validated['electrical_done'] = $request->boolean('electrical_done');
-        $validated['sleeves_done'] = $request->boolean('sleeves_done');
-        $validated['drainage_done'] = $request->boolean('drainage_done');
+        DB::transaction(function () use ($validated, $request) {
 
-        $project = Project::create($validated);
+            // Création du projet
+            $project = Project::create($validated);
 
-        // S'assurer qu'il n'y a pas déjà un lead_drafter
-        if ($project->users()
-            ->wherePivot('project_role', 'lead_drafter')
-            ->exists()
-        ) {
-
-            throw ValidationException::withMessages([
-                'project_role' => 'Ce projet a déjà un dessinateur principal.',
+            // Attache le dessinateur principal (lead_drafter)
+            $project->users()->attach($request->user()->id, [
+                'project_role' => 'lead_drafter',
             ]);
-        }
 
-        // Associer l'utilisateur connecté comme lead_drafter
-        $project->users()->attach($request->user()->id, [
-            'project_role' => 'lead_drafter',
-        ]);
+            // Création automatique des requirements
+            $defaultRequirements = [
+                'electrical',
+                'drainage',
+                'sleeves',
+                'elevator',
+            ];
+
+            foreach ($defaultRequirements as $type) {
+                $project->requirements()->create([
+                    'type' => $type,
+                    'status' => 'pending',
+                ]);
+            }
+        });
 
         return redirect()
             ->route('projects.index')
