@@ -6,7 +6,6 @@ import AppLayout from '@/layouts/app-layout';
 import { create } from '@/routes/projects';
 import type { BreadcrumbItem } from '@/types';
 
-
 interface Project {
     id: number;
     project_name: string;

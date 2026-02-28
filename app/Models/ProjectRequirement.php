@@ -37,6 +37,6 @@ class ProjectRequirement extends Model
      */
     public function completedBy()
     {
-        return $this->belongsTo(User::class, 'completed_by');       
+        return $this->belongsTo(User::class, 'completed_by');
     }
 }

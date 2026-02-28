@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('status', [
                 'pending',
                 'completed',
-                'not_applicable'
+                'not_applicable',
             ])->default('pending');
 
             // Spécifique à elevator

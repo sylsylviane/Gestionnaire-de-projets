@@ -30,11 +30,11 @@ class Project extends Model
             ->withTimestamps();
     }
 
-        /**
-        * Retourne les exigences associées à ce projet.
-        * Relation : un projet peut avoir plusieurs exigences (electrical, drainage, sleeves, elevator).
-        */
-    public function requirements() : HasMany
+    /**
+     * Retourne les exigences associées à ce projet.
+     * Relation : un projet peut avoir plusieurs exigences (electrical, drainage, sleeves, elevator).
+     */
+    public function requirements(): HasMany
     {
         return $this->hasMany(ProjectRequirement::class);
     }
