@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ProjectController extends Controller
 {
     /**
      * Affiche une liste de toutes les projets.
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (auth()->user()->hasRole('admin')) {
+        $user = $request->user();
+
+        if ($user->hasRole('admin')) {
             $projects = Project::with('users')->get();
         } else {
-            $projects = auth()->user()
-                ->projects()
+            $projects = $user->projects()
                 ->with('users')
                 ->get();
         }
@@ -50,19 +52,30 @@ class ProjectController extends Controller
             'drainage_done' => 'boolean',
         ]);
 
-        // Convertit les champs "done" en booléens pour les stocker correctement dans la base de données
         $validated['electrical_done'] = $request->boolean('electrical_done');
         $validated['sleeves_done'] = $request->boolean('sleeves_done');
         $validated['drainage_done'] = $request->boolean('drainage_done');
 
         $project = Project::create($validated);
 
-        // Associe le projet à l'utilisateur connecté avec le rôle "lead_drafter"
+        // S'assurer qu'il n'y a pas déjà un lead_drafter
+        if ($project->users()
+            ->wherePivot('project_role', 'lead_drafter')
+            ->exists()
+        ) {
+
+            throw ValidationException::withMessages([
+                'project_role' => 'Ce projet a déjà un dessinateur principal.',
+            ]);
+        }
+
+        // Associer l'utilisateur connecté comme lead_drafter
         $project->users()->attach($request->user()->id, [
             'project_role' => 'lead_drafter',
         ]);
 
-        return redirect()->route('projects.index')
+        return redirect()
+            ->route('projects.index')
             ->with('success', 'Projet créé avec succès.');
     }
 
