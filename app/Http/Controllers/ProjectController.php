@@ -86,7 +86,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return inertia('projects/show', [
+            'project' => $project->load(['users', 'requirements']),
+        ]);
     }
 
     /**
@@ -94,7 +96,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return inertia('projects/edit', [
+            'project' => $project->load(['users', 'requirements']),
+        ]);
     }
 
     /**
