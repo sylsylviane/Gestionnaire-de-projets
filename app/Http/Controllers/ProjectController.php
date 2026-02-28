@@ -50,14 +50,16 @@ class ProjectController extends Controller
             'drainage_done' => 'boolean',
         ]);
 
+        // Convertit les champs "done" en booléens pour les stocker correctement dans la base de données
         $validated['electrical_done'] = $request->boolean('electrical_done');
         $validated['sleeves_done'] = $request->boolean('sleeves_done');
         $validated['drainage_done'] = $request->boolean('drainage_done');
 
         $project = Project::create($validated);
 
+        // Associe le projet à l'utilisateur connecté avec le rôle "lead_drafter"
         $project->users()->attach($request->user()->id, [
-            'role' => 'employee',
+            'project_role' => 'lead_drafter',
         ]);
 
         return redirect()->route('projects.index')
