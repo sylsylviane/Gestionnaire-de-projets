@@ -27,4 +27,12 @@ Route::post('/projects', [ProjectController::class, 'store'])
     ->middleware(['auth', 'verified'])
     ->name('projects.store');
 
+Route::get('/projects/{project}', [ProjectController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('projects.show');
+
+Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])
+    ->middleware(['auth', 'verified'])
+    ->name('projects.edit');
+
 require __DIR__.'/settings.php';
