@@ -3,17 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AppLayout from '@/layouts/app-layout';
 import { index, show } from '@/routes/projects';
 import type { BreadcrumbItem } from '@/types';
-
-interface Project {
-    id: number;
-    project_name: string;
-    project_number: string;
-    building_type: string;
-    floors: number;
-    status: string;
-    description?: string;
-    users: Array<{ id: number; name: string }>;
-}
+import type { Project } from '@/types';
 
 type Props = {
     project: Project;
