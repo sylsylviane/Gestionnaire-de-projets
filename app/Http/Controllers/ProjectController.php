@@ -107,7 +107,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $validated = $request->validate([
-            'project_number' => 'required|string|unique:projects,project_number,' . $project->id,
+            'project_number' => 'required|string|unique:projects,project_number,'.$project->id,
             'project_name' => 'required|string',
             'building_type' => 'required|in:combustible,incombustible_acier,incombustible_beton',
             'floors' => 'required|integer|min:0',

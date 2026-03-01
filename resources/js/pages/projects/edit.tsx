@@ -1,9 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
-import AppLayout from '@/layouts/app-layout';
-import { edit, update, index } from '@/routes/projects';
-import type { BreadcrumbItem } from '@/types';
-import type { Project } from '@/types';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +11,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import AppLayout from '@/layouts/app-layout';
+import { edit, update, index } from '@/routes/projects';
+import type { Project } from '@/types';
+import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     project: Project;
@@ -58,9 +58,7 @@ export default function ProjectsEdit({ project }: Props) {
                                 {t('Edit Project')}
                             </h3>
                             <p className="text-sm text-muted-foreground">
-                                {t(
-                                    'Fill in the details to edit your project',
-                                )}
+                                {t('Fill in the details to edit your project')}
                             </p>
                         </div>
 
@@ -98,12 +96,16 @@ export default function ProjectsEdit({ project }: Props) {
                                 {t('Building Type')}
                             </Label>
 
-                            <Select name="building_type" defaultValue={project.building_type} required>
+                            <Select
+                                name="building_type"
+                                defaultValue={project.building_type}
+                                required
+                            >
                                 <SelectTrigger className="mt-1">
                                     <SelectValue
                                         placeholder={t(
                                             'Select a building type',
-                                        )} 
+                                        )}
                                     />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -143,7 +145,11 @@ export default function ProjectsEdit({ project }: Props) {
                             <Label htmlFor="description">
                                 {t('Description')}
                             </Label>
-                            <Input id="description" name="description" defaultValue={project.description || ''} />
+                            <Input
+                                id="description"
+                                name="description"
+                                defaultValue={project.description || ''}
+                            />
                             <InputError message={errors.description} />
                         </div>
 
@@ -151,7 +157,11 @@ export default function ProjectsEdit({ project }: Props) {
                         <div>
                             <Label htmlFor="status">{t('Status')}</Label>
 
-                            <Select name="status" defaultValue={project.status} required>
+                            <Select
+                                name="status"
+                                defaultValue={project.status}
+                                required
+                            >
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
