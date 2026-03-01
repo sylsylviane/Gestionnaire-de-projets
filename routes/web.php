@@ -35,4 +35,8 @@ Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])
     ->middleware(['auth', 'verified'])
     ->name('projects.edit');
 
+Route::put('/projects/{project}', [ProjectController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('projects.update');
+
 require __DIR__.'/settings.php';
